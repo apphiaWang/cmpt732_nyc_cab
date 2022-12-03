@@ -23,9 +23,14 @@
 })(document);
 
 document.addEventListener("DOMContentLoaded", () => {  
-
     if ($('#heatmap-00').length) {
       drawHeatmap("heatmap-00");
+    }
+    if ($('#heatmap-01').length) {
+      drawHeatmap("heatmap-01", "max_amount");
+    }
+    if ($('#heatmap-10').length) {
+      drawHeatmap("heatmap-10", "count");
     }
     if ($('#bar-00').length) {
       drawBarTip("bar-00", "yellow");

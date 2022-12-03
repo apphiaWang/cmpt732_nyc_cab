@@ -54,7 +54,7 @@ function drawBarTip(canvas="canvas", color="yellow") {
             type: 'bar',
             data: files[0].filter(d => d.year == yr).map(d => parseInt(d["count"]))
         });
-    })
+    });
     option && myChart.setOption(option);
   }).catch(function(err) {
       // handle error here

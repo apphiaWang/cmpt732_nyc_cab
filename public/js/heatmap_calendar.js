@@ -1,12 +1,18 @@
 
 
 function drawHeatmap(canvas="canvas", key="mean_percent") {
+    console.log(canvas)
     const years = ["2017", "2018", "2019", "2020", "2021"];
-    const filespath = years.map(y => `/public/data/daily_yellow_${y}.csv`);
+    const filespath = years.map(y => {
+        if (canvas=="heatmap-10")
+            return `/public/data/time/date-${y}.csv`;
+        return `/public/data/daily_yellow_${y}.csv`;
+    });
     function getValue(obj, key="mean_percent") {
-        if (key=="mean_percent") {
-            return  parseFloat(obj["mean_percent"]).toFixed(2);
-        } else if (key=="max_amount")
+        console.log(key)
+        if (key=="mean_percent" || key=="median_percent") {
+            return  parseFloat(obj[key]).toFixed(2);
+        } else
             return  parseInt(obj[key]);
     }    
 
@@ -17,25 +23,31 @@ function drawHeatmap(canvas="canvas", key="mean_percent") {
         myChart.clear()
         const option = {
             tooltip: {
-            position: 'top',
+            position: 'top',            
             formatter: function (p) {
                 const format = echarts.time.format(p.data[0], '{yyyy}-{MM}-{dd}', false);
                 return `${format} <br>${key}: ${p.data[1]}`;
             }
             },
             visualMap: {
-            calculable: true,
-            orient: 'vertical',
-            left: '640',
-            top: 'center',
+                calculable: true,
+                orient: 'vertical',
+                left: '635',
+                top: 'center',
             //   inRange: { color: ["#16BFFD", "#CB3066"] }
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                  saveAsImage: { show: true }
+                }
             },
         };
         option.calendar =  years.map((year, i) => {
             const opt = {
-                top: 50,
-                left: 20 + 120 * i,
-                cellSize: [15, 8],
+                top: 55,
+                left: 30 + 120 * i,
+                cellSize: [15, 6],
                 orient: 'vertical',
                 range: year,
                 monthLabel: {show: false},
@@ -51,13 +63,15 @@ function drawHeatmap(canvas="canvas", key="mean_percent") {
                 coordinateSystem: 'calendar',
                 calendarIndex: i,
                 data: data.map(d => 
-                    ([d["date"], getValue(d)])
+                    ([d["date"], getValue(d, key)])
                 )
             };
         });
-        const allvalues = files.flat().map(d => getValue(d));
+        const allvalues = files.flat().map(d => getValue(d, key));
+        console.log(allvalues)
         option.visualMap.min = Math.floor(Math.min(...allvalues));
         option.visualMap.max = Math.ceil(Math.max(...allvalues));
+        console.log(option.visualMap.max)
         option && myChart.setOption(option);
     }).catch(function(err) {
         alert("failed to load data")
