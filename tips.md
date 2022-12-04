@@ -50,7 +50,7 @@ After ETL, we have 114,348,011 records to analysis.
 ## 2.1. How do NYC passengers tip?
 
 ### 2.1.1. A Full View of Tip Distribution
-> Please click the legend to hide/show the data
+<!-- > Please click the legend to hide/show the data -->
 
 According to [New York Official Guide](https://www.nycgo.com/plan-your-trip/basic-information/tipping-sales-tax#:~:text=Taxi%20drivers%3A%2015%E2%80%9320%20percent,check%20staff%2C%20are%20always%20appreciated.), the tipping to cab driver should be 15–20 percent of total fare, which is confirmed by our result.
 
@@ -100,21 +100,27 @@ You might have noticed that in the previous distribution barcharts, the green ca
 
 ### 2.3.2. Mean Tip Percent by Locations
 
-The answer is yes. The map below shows the mean tip of NY, and we can see the business zone and resident area e.g. North Manhanttan have relatively high tipping with red color, while most industry area and public parks have low mean percent colored in blue. Check the [New York City's Zoning & Land Use Map](https://zola.planning.nyc.gov/).
+The answer is yes. We consider a trip occurs at a location if it is the pick up location or drop off location. To calculate the mean tip of each location, we build three data frames:
+- **df_pu**: pickupLocationID, avg(tip_ratio), count(*),  group by pickupLocationID
+- **df_do**: dropoffLocationID, avg(tip_ratio), count(*),  group by dropoffLocationID
+- **df_same**: pickupLocationID,  avg(tip_ratio), count(*),  where pickupLocationID-dropoffLocationID group by pickupLocationID
+First we join df_pu with df_do on their location id to merge the mean tipping. First we join df_pu with df_do on their location id to merge the mean tipping, then we do another join with df_same to subtract the duplicated part where the pickup and dropoff location are the same.  
+
+ Afterwards, we join the output to a shape file containing the geometric information. The heatmap below shows the mean tip of each location in New York. We can see the business zone and resident area e.g. North Manhanttan have relatively high tipping with red color, while most industry area and public parks have low mean percent colored in blue. Check the [New York City's Zoning & Land Use Map](https://zola.planning.nyc.gov/).
 ![Mean tip ratio of district]({{site.url}}/public/img/mean_tip_ny.png)
 
 <!-- <div id="line-00" class="canvas-400" ></div> -->
  
 
-## 3. Predicting Tips
+# 3. Predicting Tips
 The cab driver may want to know how much he can get for the tip based on the time, location, etc. So let's try to construct models and see if we can predict the tips.
 
-### 3.1. Further Feature Engineering
+## 3.1. Further Feature Engineering
 
-- **tip/total ratio <= 0.4**
-- **tip range**: divided to 4 intervals, =0, 0 - 10, 10-20, >20
+- **tip/total ratio <= 0.4**: our target for regression models.
+- **tip range**: divided to 4 intervals, =0, 0 - 10, 10-20, >20, our target for classifier models.
 
-### 3.2. Model Performance
+## 3.2. Model Performance
 
 **Regressors**
 
@@ -135,5 +141,10 @@ I tried several models provided by pyspark, and neither the regression nor the c
 ![fare-tip]({{site.url}}/public/img/fare_tip.png)
 ![other-tip]({{site.url}}/public/img/other_tip.png)
 
-## 4. Conclusion
-
+# 4. Conclusion
+- The average tipping percent of New York cabs is about 18% of the total fare. 
+- Most passengers tip 15% to 20% of the total amount.
+- Covid does not lead passengers to tip less. In contrast, during the lockdown period, passengers tip more consider the hard work for difficult trips.
+- Yellow cab passengers tip more than green cabs passenger.
+- Passengers travel to apartment areas and business zones tip more than those to parks and industry areas.  
+- Passengers tends to tip generously on small amount. 
