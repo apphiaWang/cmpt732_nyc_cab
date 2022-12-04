@@ -2,143 +2,138 @@
 layout: page
 title: New York Cab Tip Analysis
 ---
-
-As I came from a non-tipping country, I am very interested in analyzing tips of NYC so I can know how much tip is appropriate for a ride. Meanwhile, analyzing tips is also useful for city administrators and cab venodrs. It can provide them with economic information to adjust drivers' wages or cab fares in order to maximize revenue.
-
-For this project, I will first do some general analysis about the relationship between tipping and other features, then try to construct a model to predict the tip of a trip.  
-
-## 1. ETL
-
-### 1.1. Features Selection
+# 0. Motivation and Background
+As I came from a non-tipping country, I am very interested in analyzing tips of NYC, so I can understand the tipping convention and know how much I should tip the cab drivers if I travel to New York. Meanwhile, analyzing tips might also reveal some interesting information about economics or city development.
 
 My Guess for factors affecting tipping are:
 - **economic situation**: maybe after 2020, passengers will tip less due to the economic recession caused by covid, so time features like _year_, _month_, will be useful;
 - **passenger's income**: can be reflected by the _pick-up/drop-off location_.If the trip ends at financial districts, we might assume the passenger are wealthy and tip more;
 - **passenger's satisfaction to the trip**: a matter of course, but it seems we cannot find sufficient information from our dataset to demonstrate this;
 
-### 1.2. Further ETL for Tips
+For this project, I will first do ETL to filter unwanted data and extract useful features, then do some general analysis about the relationship between tipping and other features, finally try if I can construct a model to predict the tip of a trip.  
 
-- **payment type = 1**:<br>
-    The dataset only records tips paid by credit card.
-- **Tip Ratio/Percentage**:<br>
-    Here we count the `100*tip_amount/(total_amount - tip_amount)` as the tip percent.
-- **Tip Range**:<br>
-    In addition tip percentage directly, I also determine the tip range to help visualize the massive data.
-- **Pickup/Dropdown location**:<br>
-    Locations can somehow reflect the income level of passengers.
-- **Date, Year, Month**:<br>
-    Necessary for analyzing tip changes over time.
+# 1. ETL
 
-## 2. General Analysis
+## 1.1. Original ETL
+This part of ETL is suitable for all four subjects analysis.
 
-### 2.1. How much do NYC passengers tip?
+| Column       | filter                                       | Remark                                                       |
+| ------------ | -------------------------------------------- | ------------------------------------------------------------ |
+| Time span    | 2017-2021                                    | We only focus on the near 5 years of data.                   |
+| Car type     | Yellow and Green Cab                         | Yellow cabs are allowed to pick up passengers anywhere in the city. Green cabs can only pickup passengers from Bronx, Staten Island, Brooklyn, Queens(excluding airports), and Northern Manhattan. |
+| Payment type | Credit card                         | Only tip paid by credit card is recorded. <br>**_*only for tip analysis_**    |
+| Total amount | Total payment amount greater or equal to 2.5 | The initial price of NYC taxi is 2.5 dollars.                |
 
-#### 2.1.1. General Overview
-Below are a bar chart of the yellow and green cabs tip distribution from 2017 to 2021. According to [New York Official Guide](https://www.nycgo.com/plan-your-trip/basic-information/tipping-sales-tax#:~:text=Taxi%20drivers%3A%2015%E2%80%9320%20percent,check%20staff%2C%20are%20always%20appreciated.), the tipping to cab driver should be 15–20 percent of total fare, which is confirmed by our result.
+
+## 1.2. Further ETL for Tips
+
+- **Tip Ratio/Percentage** is calculated by `tip_amount/(total_amount - tip_amount)`. Percentage will be used for subsequent visualization.
+    ![Mean tip ratio of district]({{site.url}}/public/img/tip_distribution.png){: width="60%" }
+- **Tip Range**: Based on the distribution of tip ratio, we further assign the tip to several ranges to help analyze the massive data. The tip range is calculated by`ceil(20*tip_amount/(total_amount - tip_amount))`, below is the table of range index and corresponding range:
+
+    |tip_range_index | indicated range |
+    |-|-|
+    |0 | tip=0|
+    |i between 1 and 8 |  tip > 5i, <= 5i + 5|
+    |9 | tip > 40|
+
+- **fare_amount BETWEEN 2.5 + (2.5 ± 0.5) * trip_distance**: According [NY cab official guide](https://www.nyc.gov/site/tlc/passengers/taxi-fare.page#:~:text=%242.50%20initial%20charge.,Dutchess%2C%20Orange%20or%20Putnam%20Counties), the fare should be $2.5 initial charge plus 50 cents per 1/5 mile when traveling above 12mph or per 60 seconds in slow traffic or when the vehicle is stopped. Here I increase the range to allow some deviation.
+- **Fare amount**: for tip prediction.
+- **Other Amount**: is calculated by `total_amount-tip_amount-fare_amount`.  Includes all other fares such as tolls. Should be useful for tip prediction.
+- **Date, Year, Month of pickup**: for analyzing tip changes over time. Is generated by the sql built-in functions.
+- **Pickup/Dropdown location**: can somehow reflect the income level of passengers.
+
+After ETL, we have 114,348,011 records to analysis.
+
+# 2. General Analysis
+
+## 2.1. How do NYC passengers tip?
+
+### 2.1.1. A Full View of Tip Distribution
+> Please click the legend to hide/show the data
+
+According to [New York Official Guide](https://www.nycgo.com/plan-your-trip/basic-information/tipping-sales-tax#:~:text=Taxi%20drivers%3A%2015%E2%80%9320%20percent,check%20staff%2C%20are%20always%20appreciated.), the tipping to cab driver should be 15–20 percent of total fare, which is confirmed by our result.
 
 <div id="bar-00" class="canvas-400" ></div>
 <div id="bar-01" class="canvas-400" ></div>
 
-> Please click the legend to hide/show the data
+### 2.1.2. What is the Average Tip from 2017 to 2021?
 
-#### 2.1.2. Crazy Tippers
+|year|  mean_tip_percent|
+|----|------------------|
+|2017|18.752909945721235|
+|2018|18.636400564789707|
+|2019|18.146659574580887|
+|2020| 18.43724157920186|
+|2021| 18.73994173994071|
+
+### 2.1.3. Crazy Tippers
+Some trips have extremely huge tips that can go up to hundreds of dollars. The largest tip of our filtered record is 1001 dollar, from a trip in the early morning on 2020-07-02.
+
+
+|    pickup_datetime|2020-07-02 05:50:12|
+|   dropoff_datetime|2020-07-02 05:55:46|
+|from |UN/Turtle Bay South, Manhattan|
+|to|Gramercy, Manhattan|
+|fare_amount|6.5|
+|tip_amount| 1001.0|
+|total_amount|1010.8|
+
+At first I thought this is a failure in car recorders, but similar stories have been reported. Check the articles [crazy-taxi-stories-and-data-from-new-york-city](https://www.thrillist.com/vice/crazy-taxi-stories-and-data-from-new-york-city) and [philly-cab-driver-gets-1000-tip](https://www.goodnewsnetwork.org/philly-cab-driver-gets-1000-tip-for-3-min-drive/).
+
 **Daily Max Tip From 2017 to 2021**
 <div id="heatmap-01" class="canvas-400"></div>
 
-### 2.2. Does the economic situation impact on tipping?
- We can see that for both cabs, although the number of trips dropped significantly in 2020 due to covid, the distribution of tipping seems remain, which is kind of overturn our assumption that passengers may tip less during economic recession.
 
-Let's study this in more details. The heatmap below shows the daily mean tip percentage of NYC. The overal mean vary from 17 to 21%, not a significant differene. The mean tip decreased in 2019, and rebound in March 2020. So may be the economic recession only affects on the trip amount. The poor no longer call a taxi, while the rich keep their tipping behavior.
+## 2.2 Has Covid changed how passengers tip?
 
-Also notice that there is a high-tip red area from March 2020 to June 2020, the covid lockdown period of NY. This kind of makes sense as passengers tip more when it is difficult to travel. 
+At first, I thought the economic downturn caused by covid would lead to decrease in tipping, but the tip distribution barcharts overturned my guess as the tip distribution remained although the trip amount decrease significantly in 2020. The daily mean tip heatmap below shows more detail. The mean tip decreased in February 2019, and rebounded in March 2020, and the mean vary from 17 to 21%, not a significant difference. So may be the economic recession only affects on the trip amount. The poor no longer call a taxi, while the rich keep their tipping behavior.
 
 <div id="heatmap-00" class="canvas-400"></div>
 
-### 2.3. Does tipping vary by location?
+ Also notice that the mean is relatively higher from March to June 2020, the lockdown period of NY. So we might infer that the difficulty of travel lead passengers to tip more considering the hard work of the drivers.
 
-From the previous bar charts, we can also observe that yellow cab passengers tip more than green cab passengers. Quite a few green cab passengers do not tip. In New York, yellow cabs run mainly in busy urban areas, while green cabs, introduced in 2011, run in areas not served by yellow cabs. This lead give us a new question, do tipping vary by pick-up/drop-off locations?
+## 2.3. Does tipping vary by location?
 
+### 2.3.1. Yellow VS Green
+You might have noticed that in the previous distribution barcharts, the green cab passengers tend to tip less than those yellow. In 2021, Quite a few green cab passengers do not even tip. In New York, yellow cabs run mainly in busy urban areas, while green cabs, introduced in 2011, run in areas not served by yellow cabs. This give us a new question, do tipping vary by the pick-up/drop-off locations?
+
+### 2.3.2. Mean Tip Percent by Locations
+
+The answer is yes. The map below shows the mean tip of NY, and we can see the business zone and resident area e.g. North Manhanttan have relatively high tipping with red color, while most industry area and public parks have low mean percent colored in blue. Check the [New York City's Zoning & Land Use Map](https://zola.planning.nyc.gov/).
 ![Mean tip ratio of district]({{site.url}}/public/img/mean_tip_ny.png)
 
-![0 tip]({{site.url}}/public/img/0_tip_ratio.png)
-
-<div id="line-00" class="canvas-400" ></div>
-
-### 2.4. Some interesting facts about NYC tipping
-
-<div id="heatmap-01" class="canvas-400"></div>
-
-We can also observe from the previous bar charts that yellow cab passengers tip more than green cab passengers. Quite a few green cab passengers do not tip. In New York, yellow cabs run mainly in busy urban areas, while green cabs, introduced in 2011, run in areas not served by yellow cabs. This lead to our next question, 
+<!-- <div id="line-00" class="canvas-400" ></div> -->
+ 
 
 ## 3. Predicting Tips
-Now let's try to construct models and see if we can predict the tips.
+The cab driver may want to know how much he can get for the tip based on the time, location, etc. So let's try to construct models and see if we can predict the tips.
 
-### 3.1. Feature Engineering
-Combining previous analysis results, we do a further ETL:
-- tip/total ratio <= 0.4
-- 
+### 3.1. Further Feature Engineering
 
-### 3.2. Regression Model
+- **tip/total ratio <= 0.4**
+- **tip range**: divided to 4 intervals, =0, 0 - 10, 10-20, >20
+
+### 3.2. Model Performance
+
+**Regressors**
 
 model | Evaluation Score | TOP 2 important features
 -| - 
-DecisionTree | r2 = 0.0427<br>rmse = 6.5653 | other_amount: 0.8204, fare_amount:0.17484
-RandomForest | r2 = 0.0474<br> rmse = 6.5468 | dd
-Gradient Boosted Tree | r2 = 0.0427<br>rmse = 6.5653 | other_amount: 0.8204, fare_amount:0.17484
+DecisionTree | r2 = 0.0427<br>rmse = 6.5653 | other_amount: 0.8204, fare_amount:0.1748
+RandomForest | r2 = 0.0474<br> rmse = 6.5468 | other_amount: 0.2284, fare_amount: 0.1713
+Gradient Boosted Tree | r2 = 0.0427<br>rmse = 6.5653 | other_amount: 0.8204, fare_amount:0.3296
 
-Regerssion models all have poor performance predicting the tip percent. What about predicting the tip range instead of directly predicting the precise tip percent?
+**Classifiers**
 
-### 3.3. Classification Model
 model | Evaluation Score | TOP 2 important features
 -| - 
-DecisionTree | accuracy=0.5977 | other_amount: ,0.58494, fare_amount: 0.3066
-RandomForest | r2 = 0.5224|  other_amount: 0.66576, fare_amount: .3144
+DecisionTree | accuracy=0.5417 | other_amount: 0.5913, fare_amount: 0.2621
+RandomForest | accuracy=0.5224|  other_amount: 0.6657, fare_amount: 0.3144
 
-The performance of classification models are not ideal neither. It seems we do not have sufficient data to predict tip. 
+I tried several models provided by pyspark, and neither the regression nor the classification models performed well. It seems we do not have sufficient data to perform tip prediction. However, all models agree that fares and other amount have the greatest importance on deciding tips, which we do not consider previously. After ploting the data, we can see that some passengers tip quite generously on small amount trip.
+![fare-tip]({{site.url}}/public/img/fare_tip.png)
+![other-tip]({{site.url}}/public/img/other_tip.png)
 
-<!-- Random forest
-r2 = 0.04782778757031414
-rmse = 6.544585289474854
-Validation score for regressor:
-r2 = 0.04743175106022257
-rmse = 6.546860494398106
-(9,[1,2,3,4,5,6,7,8],[0.0006658149418888706,0.07474482780909318,0.00664771461953278,0.022515968497505024,0.09028324010115958,2.327246793587595e-05,0.6338079501987203,0.1713112113641643])
-
-gbt
-r2 = 0.06206689408092958
-rmse = 6.496376598132411
-Validation score for regressor:
-r2 = 0.06153409225445905
-rmse = 6.495483559696155
-(9,[1,2,3,4,5,6,7,8],[0.03621393061342227,0.11655310355735328,0.03633715135198239,0.14470491109085734,0.10808599829307362,5.624358247684168e-06,0.2284466106951007,0.32965267003996274]) 
-
-
-Training score for classifier:
-score = 0.5219599181448649
-Validation score for classifier:
-rmse = 0.5223667017162587
-(8,[0,1,2,3,4,5,6,7],[0.0007166769226124161,0.04919912526950851,0.0013692810066321761,0.0019166280729605739,0.05518782918024433,1.6390878658603474e-05,0.5849471263943586,0.3066469422750248])
-
-decision tree
-Training score for classifier:
-score = 0.5973141758824757
-Validation score for classifier:
-rmse = 0.5977106426827073
-(8,[1,6,7],[0.01981997007694503,0.6657696773482605,0.3144103525747945])
--->
-
-## 4. Some Interesting Facts about NY Cab Tipping
-
-### Top Tip Given Every Year
-
-|Year | Tip Amount | Picup location | Dropoff location|
-|- | - | - | -|
-|2017|1600|?|?|
-
-
-
-### The Most Petty District From 2017 to 2021
-
-## 5. Conclusion
-New Yorkers typically tip cabs 15 to 20 percent cab drivers.
+## 4. Conclusion
 
