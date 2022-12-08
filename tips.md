@@ -1,7 +1,8 @@
 ---
 layout: page
-title: New York Cab Tip Analysis
+title: Tip Analysis
 ---
+##### author: Yanfei Wang [ywa416]
 # 0. Motivation and Background
 As I came from a non-tipping country, I am very interested in analyzing tips of NYC, so I can understand the tipping convention and know how much I should tip the cab drivers if I travel to New York. Meanwhile, analyzing tips might also reveal some interesting information about economics or city development.
 
@@ -11,6 +12,8 @@ My Guess for factors affecting tipping are:
 - **passenger's satisfaction to the trip**: a matter of course, but it seems we cannot find sufficient information from our dataset to demonstrate this;
 
 For this project, I will first do ETL to filter unwanted data and extract useful features, then do some general analysis about the relationship between tipping and other features, finally try if I can construct a model to predict the tip of a trip.  
+
+<!--more-->
 
 # 1. ETL
 
@@ -28,7 +31,7 @@ This part of ETL is suitable for all four subjects analysis.
 ## 1.2. Further ETL for Tips
 
 - **Tip Ratio/Percentage** is calculated by `tip_amount/(total_amount - tip_amount)`. Percentage will be used for subsequent visualization.
-    ![Mean tip ratio of district]({{site.url}}/public/img/tip_distribution.png){: width="60%" }
+
 - **Tip Range**: Based on the distribution of tip ratio, we further assign the tip to several ranges to help analyze the massive data. The tip range is calculated by`ceil(20*tip_amount/(total_amount - tip_amount))`, below is the table of range index and corresponding range:
 
     |tip_range_index | indicated range |
@@ -104,13 +107,11 @@ The answer is yes. We consider a trip occurs at a location if it is the pick up 
 - **df_pu**: pickupLocationID, avg(tip_ratio), count(*),  group by pickupLocationID
 - **df_do**: dropoffLocationID, avg(tip_ratio), count(*),  group by dropoffLocationID
 - **df_same**: pickupLocationID,  avg(tip_ratio), count(*),  where pickupLocationID-dropoffLocationID group by pickupLocationID
+
 First we join df_pu with df_do on their location id to merge the mean tipping. First we join df_pu with df_do on their location id to merge the mean tipping, then we do another join with df_same to subtract the duplicated part where the pickup and dropoff location are the same.  
 
  Afterwards, we join the output to a shape file containing the geometric information. The heatmap below shows the mean tip of each location in New York. We can see the business zone and resident area e.g. North Manhanttan have relatively high tipping with red color, while most industry area and public parks have low mean percent colored in blue. Check the [New York City's Zoning & Land Use Map](https://zola.planning.nyc.gov/).
-![Mean tip ratio of district]({{site.url}}/public/img/mean_tip_ny.png)
-
-<!-- <div id="line-00" class="canvas-400" ></div> -->
- 
+<img src="{{ site.url }}{{ site.baseurl }}/public/img/tip/mean_tip_ny.png" alt="Mean tip ratio of NY locations"/>
 
 # 3. Predicting Tips
 The cab driver may want to know how much he can get for the tip based on the time, location, etc. So let's try to construct models and see if we can predict the tips.
@@ -138,8 +139,11 @@ DecisionTree | accuracy=0.5417 | other_amount: 0.5913, fare_amount: 0.2621
 RandomForest | accuracy=0.5224|  other_amount: 0.6657, fare_amount: 0.3144
 
 I tried several models provided by pyspark, and neither the regression nor the classification models performed well. It seems we do not have sufficient data to perform tip prediction. However, all models agree that fares and other amount have the greatest importance on deciding tips, which we do not consider previously. After ploting the data, we can see that some passengers tip quite generously on small amount trip.
-![fare-tip]({{site.url}}/public/img/fare_tip.png)
-![other-tip]({{site.url}}/public/img/other_tip.png)
+
+<div class="row">
+<img class="column" src="{{ site.url }}{{ site.baseurl }}/public/img/tip/fare_tip.png" alt="fare-tip"/>
+<img class="column" src="{{ site.url }}{{ site.baseurl }}/public/img/tip/other_tip.png" alt="other-tip"/>
+</div>
 
 # 4. Conclusion
 - The average tipping percent of New York cabs is about 18% of the total fare. 

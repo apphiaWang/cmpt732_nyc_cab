@@ -385,6 +385,21 @@ tbody tr:nth-child(odd) th {
  * there are no more previous or next posts to show.
  */
 
+ .row {
+  display: flex;
+}
+
+.column {
+  float: left;
+  width: 50%; 
+  padding: 5px;
+}
+ .img-60 {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 60%;
+}
 .pagination {
   overflow: hidden; /* clearfix */
   margin-left: -1rem;

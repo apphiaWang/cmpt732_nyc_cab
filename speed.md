@@ -3,10 +3,7 @@ layout: page
 title: Speed Analysis
 ---
 
-
-# CMPT732 Final Project Analysis
-
-##### Yiwen Wang [ywa422]
+##### author: Yiwen Wang [ywa422]
 
 ## 1. ETL
 

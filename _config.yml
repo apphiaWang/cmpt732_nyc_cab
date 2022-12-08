@@ -6,14 +6,16 @@ url:                 https://apphiawang.github.io/
 baseurl:             /cmpt732_nyc_cab
 paginate:            5
 permalink:           pretty
+excerpt_separator: <!--more-->
 
+
+# Gems
 # About/contact
 author:
   name:              Yanfei Wang, Yiwen Wang, Yucheng Gao, Axida
   url:               https://github.com/apphiaWang/cmpt732_nyc_cab
   email:             yanfei_wang@sfu.ca
 
-# Gems
 plugins:
   - jekyll-paginate
 

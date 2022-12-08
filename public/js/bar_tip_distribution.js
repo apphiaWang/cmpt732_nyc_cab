@@ -1,6 +1,6 @@
 function drawBarTip(canvas="canvas", color="yellow") {
   Promise.all([
-    d3.csv(`/public/data/tip_dis_${color}.csv`)
+    d3.csv(`${window.myUrl}/public/data/tip_dis_${color}.csv`)
   ]).then(function(files) {
           // const year = "2017";
     const years = ["2017", "2018", "2019", "2020", "2021"];

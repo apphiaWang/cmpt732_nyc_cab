@@ -1,15 +1,13 @@
 
 
 function drawHeatmap(canvas="canvas", key="mean_percent") {
-    console.log(canvas)
     const years = ["2017", "2018", "2019", "2020", "2021"];
     const filespath = years.map(y => {
         if (canvas=="heatmap-10")
-            return `/public/data/time/date-${y}.csv`;
-        return `/public/data/daily_yellow_${y}.csv`;
+            return `${window.myUrl}/public/data/time/date-${y}.csv`;
+        return `${window.myUrl}/public/data/daily_yellow_${y}.csv`;
     });
     function getValue(obj, key="mean_percent") {
-        console.log(key)
         if (key=="mean_percent" || key=="median_percent") {
             return  parseFloat(obj[key]).toFixed(2);
         } else
@@ -68,14 +66,11 @@ function drawHeatmap(canvas="canvas", key="mean_percent") {
             };
         });
         const allvalues = files.flat().map(d => getValue(d, key));
-        console.log(allvalues)
         option.visualMap.min = Math.floor(Math.min(...allvalues));
         option.visualMap.max = Math.ceil(Math.max(...allvalues));
-        console.log(option.visualMap.max)
         option && myChart.setOption(option);
     }).catch(function(err) {
-        alert("failed to load data")
-        console.log(err)
+        alert("failed to load data "+err)
     })
 
 }
