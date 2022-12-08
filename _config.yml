@@ -2,7 +2,7 @@
 title:               CMPT732
 tagline:             'Group project NYC CAB Analysis'
 description:         
-url:                 https://apphiawang.github.io/
+url:                 https://apphiawang.github.io
 baseurl:             /cmpt732_nyc_cab
 paginate:            5
 permalink:           pretty
