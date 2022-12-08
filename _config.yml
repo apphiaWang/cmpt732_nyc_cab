@@ -1,17 +1,17 @@
 # Setup
 title:               CMPT732
 tagline:             'Group project NYC CAB Analysis'
-description:         'A reserved <a href="https://jekyllrb.com" target="_blank">Jekyll</a> theme that places the utmost gravity on content with a hidden drawer. Made by <a href="https://twitter.com/mdo" target="_blank">@mdo</a>.'
-url:                 http://lanyon.getpoole.com
-baseurl:             ''
+description:         
+url:                 https://apphiawang.github.io/
+baseurl:             cmpt732_nyc_cab
 paginate:            5
 permalink:           pretty
 
 # About/contact
 author:
-  name:              Mark Otto
-  url:               https://twitter.com/mdo
-  email:             markdotto@gmail.com
+  name:              Yanfei Wang, Yiwen Wang, Yucheng Gao, Axida
+  url:               https://github.com/apphiaWang/cmpt732_nyc_cab
+  email:             yanfei_wang@sfu.ca
 
 # Gems
 plugins:
