@@ -390,9 +390,16 @@ tbody tr:nth-child(odd) th {
 }
 
 .column {
-  float: left;
+  float: center;
   width: 50%; 
-  padding: 5px;
+}
+.column-5 {
+  float: center;
+  width: 20%; 
+}
+.column-4 {
+  float: center;
+  width: 25%; 
 }
  .img-60 {
   display: block;
