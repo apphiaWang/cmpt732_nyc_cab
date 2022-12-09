@@ -97,15 +97,9 @@ You might have noticed that in the previous distribution barcharts, the green ca
 
 ### 2.3.2. Mean Tip Percent by Locations
 
-The answer is yes. We consider a trip occurs at a location if it is the pick up location or drop off location. To calculate the mean tip of each location, we build three data frames:
-- **df_pu**: pickupLocationID, avg(tip_ratio), count(*),  group by pickupLocationID
-- **df_do**: dropoffLocationID, avg(tip_ratio), count(*),  group by dropoffLocationID
-- **df_same**: pickupLocationID,  avg(tip_ratio), count(*),  where pickupLocationID-dropoffLocationID group by pickupLocationID
-
-First we join df_pu with df_do on their location id to merge the mean tipping. First we join df_pu with df_do on their location id to merge the mean tipping, then we do another join with df_same to subtract the duplicated part where the pickup and dropoff location are the same.  
-
- Afterwards, we join the output to a shape file containing the geometric information. The heatmap below shows the mean tip of each location in New York. We can see the business zone and resident area e.g. North Manhanttan have relatively high tipping with red color, while most industry area and public parks have low mean percent colored in blue. Check the [New York City's Zoning & Land Use Map](https://zola.planning.nyc.gov/).
+The answer is yes. We consider a trip occurs at a location if it is the pick up location or drop off location, then do a bunch of join quries to get the mean tip ratio by location. The heatmap below shows the mean tip ratio of each location in New York. Red areas have higher tip_ratio while blue areas have lower. 
 <img src="{{ site.url }}{{ site.baseurl }}/public/img/tip/mean_tip_ny.png" alt="Mean tip ratio of NY locations"/>
+We can see the business zone, e.g. Manhanttan, North Queens, have relatively high tipping with red color, while remote resident areas and parks in the south have low mean percent colored in blue. Notice that the red area in the south east is the JFK Airport. Check the [New York City's Zoning & Land Use Map](https://zola.planning.nyc.gov/).
 
 # 3. Predicting Tips
 The cab driver may want to know how much he can get for the tip based on the time, location, etc. So let's try to construct models and see if we can predict the tips.
@@ -144,5 +138,5 @@ I tried several models provided by pyspark, and neither the regression nor the c
 - Most passengers tip 15% to 20% of the total amount.
 - Covid does not lead passengers to tip less. In contrast, during the lockdown period, passengers tip more consider the hard work for difficult trips.
 - Yellow cab passengers tip more than green cabs passenger.
-- Passengers travel to apartment areas and business zones tip more than those to parks and industry areas.  
+- Passengers travel to commercially dense areas in the north tip more than those to resident areas and parks in the south.  
 - Passengers tends to tip generously on small amount. 
