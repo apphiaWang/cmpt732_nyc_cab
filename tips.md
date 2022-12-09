@@ -17,19 +17,12 @@ For this project, I will first do ETL to filter unwanted data and extract useful
 
 # 1. ETL
 
-## 1.1. Original ETL
-This part of ETL is suitable for all four subjects analysis.
+## 1.1. Initial ETL 
 
-| Column       | filter                                       | Remark                                                       |
-| ------------ | -------------------------------------------- | ------------------------------------------------------------ |
-| Time span    | 2017-2021                                    | We only focus on the near 5 years of data.                   |
-| Car type     | Yellow and Green Cab                         | Yellow cabs are allowed to pick up passengers anywhere in the city. Green cabs can only pickup passengers from Bronx, Staten Island, Brooklyn, Queens(excluding airports), and Northern Manhattan. |
-| Payment type | Credit card                         | Only tip paid by credit card is recorded. <br>**_*only for tip analysis_**    |
-| Total amount | Total payment amount greater or equal to 2.5 | The initial price of NYC taxi is 2.5 dollars.                |
-
+Please check [home page]({{ site.url }}{{ site.baseurl }}/introduction) for the intial ETL
 
 ## 1.2. Further ETL for Tips
-
+- **payment_type = 1**, only trips pay by credit card has their tip amount recorded in the dataset.
 - **Tip Ratio/Percentage** is calculated by `tip_amount/(total_amount - tip_amount)`. Percentage will be used for subsequent visualization.
 
 - **Tip Range**: Based on the distribution of tip ratio, we further assign the tip to several ranges to help analyze the massive data. The tip range is calculated by`ceil(20*tip_amount/(total_amount - tip_amount))`, below is the table of range index and corresponding range:

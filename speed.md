@@ -9,14 +9,9 @@ title: Speed Analysis
 
 + **Initial ETL**
 
-This part of ETL is suitable for all four subjects analysis.
+Please check [home page]({{ site.url }}{{ site.baseurl }}/introduction) for the intial ETL
 
-| Column       | filter                                       | Remark                                                       |
-| ------------ | -------------------------------------------- | ------------------------------------------------------------ |
-| Time span    | 2017-2021                                    | We only focus on the near 5 years of data.                   |
-| Car type     | Yellow and Green Cab                         | Yellow cabs are allowed to pick up passengers anywhere in the city. Green cabs can only pickup passengers from Bronx, Staten Island, Brooklyn, Queens(excluding airports), and Northern Manhattan. |
-| Payment type | Cash and Credit card                         | Only payments with credit card have record of tip amount.    |
-| Total amount | Total payment amount greater or equal to 2.5 | The initial price of NYC taxi is 2.5 dollars.                |
+This part of ETL is suitable for all four subjects analysis.
 
 + **Speed Subject ETL**
 
