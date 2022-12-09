@@ -2,7 +2,7 @@
 layout: page
 title: Tip Analysis
 ---
-##### author: Yanfei Wang [ywa416]
+##### author: Yanfei
 # 0. Motivation and Background
 As I came from a non-tipping country, I am very interested in analyzing tips of NYC, so I can understand the tipping convention and know how much I should tip the cab drivers if I travel to New York. Meanwhile, analyzing tips might also reveal some interesting information about economics or city development.
 
@@ -80,7 +80,6 @@ At first I thought this is a failure in car recorders, but similar stories have 
 **Daily Max Tip From 2017 to 2021**
 <div id="heatmap-01" class="canvas-400"></div>
 
-
 ## 2.2 Has Covid changed how passengers tip?
 
 At first, I thought the economic downturn caused by covid would lead to decrease in tipping, but the tip distribution barcharts overturned my guess as the tip distribution remained although the trip amount decrease significantly in 2020. The daily mean tip heatmap below shows more detail. The mean tip decreased in February 2019, and rebounded in March 2020, and the mean vary from 17 to 21%, not a significant difference. So may be the economic recession only affects on the trip amount. The poor no longer call a taxi, while the rich keep their tipping behavior.
@@ -88,6 +87,8 @@ At first, I thought the economic downturn caused by covid would lead to decrease
 <div id="heatmap-00" class="canvas-400"></div>
 
  Also notice that the mean is relatively higher from March to June 2020, the lockdown period of NY. So we might infer that the difficulty of travel lead passengers to tip more considering the hard work of the drivers.
+
+ <img src="{{ site.url }}{{ site.baseurl }}/public/img/tip/day_hour.png" alt="Mean tip by pickup day and hour"/>
 
 ## 2.3. Does tipping vary by location?
 

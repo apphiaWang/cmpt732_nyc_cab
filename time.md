@@ -3,7 +3,7 @@ layout: page
 title: Time Analysis
 ---
 
-**author: Yuchen Gao[yga111]**
+#### author: Yuchen
 
 # 1. Time Subject ETL
 - **Generate New Fields**

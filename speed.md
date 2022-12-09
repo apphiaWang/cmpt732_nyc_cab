@@ -3,7 +3,7 @@ layout: page
 title: Speed Analysis
 ---
 
-##### author: Yiwen Wang [ywa422]
+##### author: Yiwen
 
 ## 1. ETL
 
