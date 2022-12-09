@@ -31,6 +31,7 @@ This part of ETL is suitable for all four subjects analysis.
   * **Relationship between Multipolygon Type and another Multipolygon Type**
   
     The simplest method is **GeoSeries.intersects()** provided by geopandas, which can tell you if two polygons intersect.
+
 # 2. Exploration of things affecting cab operation
 
 An iconic New York City landmark, cabs ply the streets of New York day and night. We can't help but wonder what things influence the use of cabs in such a world capital.
@@ -70,63 +71,57 @@ An iconic New York City landmark, cabs ply the streets of New York day and night
 
   * **Analysis**: I did the statistical work on the drop-off and pick-up locations of cab orders using the two dimensions of se asons and years as categories. Then they were compared according to their respective categories.
 
-    <div class="row">
-        <img src="{{ site.url }}{{ site.baseurl }}/public/img/transportation/output_year/DO_2017.png" 
-     class="column-5"/>
-        <img src="{{ site.url }}{{ site.baseurl }}/public/img/transportation/output_year/DO_2018.png" 
-     class="column-5"/>
-        <img src="{{ site.url }}{{ site.baseurl }}/public/img/transportation/output_year/DO_2019.png" 
-     class="column-5"/>
+   <div class="row">
+      <img src="{{ site.url }}{{ site.baseurl }}/public/img/transportation/output_year/DO_2017.png" 
+   class="column-5"/>
+      <img src="{{ site.url }}{{ site.baseurl }}/public/img/transportation/output_year/DO_2018.png" 
+   class="column-5"/>
+      <img src="{{ site.url }}{{ site.baseurl }}/public/img/transportation/output_year/DO_2019.png" 
+   class="column-5"/>
       <img src="{{ site.url }}{{ site.baseurl }}/public/img/transportation/output_year/DO_2020.png" 
-     class="column-5"/>
+      class="column-5"/>
       <img src="{{ site.url }}{{ site.baseurl }}/public/img/transportation/output_year/DO_2021.png" 
-     class="column-5"/>
-      </div>
-    >Changes in drop-off locations over five years
+      class="column-5"/>
+   </div>
+   >Changes in drop-off locations over five years
     
     
-    <div class="row">
-        <img src="{{ site.url }}{{ site.baseurl }}/public/img/transportation/output_year/PU_2017.png" 
-     class="column-5"/>
-        <img src="{{ site.url }}{{ site.baseurl }}/public/img/transportation/output_year/PU_2018.png" 
-     class="column-5"/>
-        <img src="{{ site.url }}{{ site.baseurl }}/public/img/transportation/output_year/PU_2019.png" 
-     class="column-5"/>
+   <div class="row">
+      <img src="{{ site.url }}{{ site.baseurl }}/public/img/transportation/output_year/PU_2017.png" 
+   class="column-5"/>
+      <img src="{{ site.url }}{{ site.baseurl }}/public/img/transportation/output_year/PU_2018.png" 
+   class="column-5"/>
+      <img src="{{ site.url }}{{ site.baseurl }}/public/img/transportation/output_year/PU_2019.png" 
+   class="column-5"/>
       <img src="{{ site.url }}{{ site.baseurl }}/public/img/transportation/output_year/PU_2020.png" 
-     class="column-5"/>
+      class="column-5"/>
       <img src="{{ site.url }}{{ site.baseurl }}/public/img/transportation/output_year/PU_2021.png" 
-     class="column-5"/>
-      </div> 
-      >Changes in pick-up locations over five years
+      class="column-5"/>
+   </div> 
+   >Changes in pick-up locations over five years
     
     
-    We can see from the two sets of results above: the distribution of the drop-off and pick-up areas have both remained almost unchanged over the past five years. However, a decline in the number of orders can still be seen after 2020, which may be the effect of the COVID-19 epidemic.
+   We can see from the two sets of results above: the distribution of the drop-off and pick-up areas have both remained almost unchanged over the past five years. However, a decline in the number of orders can still be seen after 2020, which may be the effect of the COVID-19 epidemic.
     
-    <div class="row">
-        <img src="{{ site.url }}{{ site.baseurl }}/public/img/transportation/output_season/DO_season_1.png" 
-     class="column-4"/>
-        <img src="{{ site.url }}{{ site.baseurl }}/public/img/transportation/output_season/DO_season_2.png" 
-     class="column-4"/>
-        <img src="{{ site.url }}{{ site.baseurl }}/public/img/transportation/output_season/DO_season_3.png" 
-     class="column-4"/>
-      <img src="{{ site.url }}{{ site.baseurl }}/public/img/transportation/output_season/DO_season_4.png" 
-     class="column-4"/>
-      </div> 
-    >Change of drop-off location in four seasons
-    
-    
-
-<div class="row">
-    <img src="{{ site.url }}{{ site.baseurl }}/public/img/transportation/output_season/PU_season_1.png" 
- class="column-4"/>
-    <img src="{{ site.url }}{{ site.baseurl }}/public/img/transportation/output_season/PU_season_2.png" 
- class="column-4"/>
-    <img src="{{ site.url }}{{ site.baseurl }}/public/img/transportation/output_season/PU_season_3.png" 
- class="column-4"/>
-  <img src="{{ site.url }}{{ site.baseurl }}/public/img/transportation/output_season/PU_season_4.png" 
- class="column-4"/>
-  </div> 
-  >Change of pick-up location in four seasons
+   <div class="row">
+      <img src="{{ site.url }}{{ site.baseurl }}/public/img/transportation/output_season/DO_season_1.png" class="column-4"/>
+      <img src="{{ site.url }}{{ site.baseurl }}/public/img/transportation/output_season/DO_season_2.png" class="column-4"/>
+      <img src="{{ site.url }}{{ site.baseurl }}/public/img/transportation/output_season/DO_season_3.png" class="column-4"/>
+      <img src="{{ site.url }}{{ site.baseurl }}/public/img/transportation/output_season/DO_season_4.png" class="column-4"/>
+   </div> 
+   >Change of drop-off location in four seasons
+   <div class="row">
+      <img src="{{ site.url }}{{ site.baseurl }}/public/img/transportation/output_season/PU_season_1.png" 
+   class="column-4"/>
+      <img src="{{ site.url }}{{ site.baseurl }}/public/img/transportation/output_season/PU_season_2.png" 
+   class="column-4"/>
+      <img src="{{ site.url }}{{ site.baseurl }}/public/img/transportation/output_season/PU_season_3.png" 
+   class="column-4"/>
+   <img src="{{ site.url }}{{ site.baseurl }}/public/img/transportation/output_season/PU_season_4.png" 
+   class="column-4"/>
+   </div> 
+   >Change of pick-up location in four seasons
+   
 
 From the above two sets of results, we can see that season also has almost no effect on drop-off and pick-up areas distribution.
 

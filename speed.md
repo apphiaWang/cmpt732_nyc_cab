@@ -47,7 +47,7 @@ If we think of a city as a living creature, and roads as veins, then traffics ar
 
 ### 2.1 Rush hours
 
-+ **Question: **Does different hours of a day and different day of a week affect the speed of the traffics? 
++ **Question**: Does different hours of a day and different day of a week affect the speed of the traffics? 
 
 + **Perspective**: If I am a customer who wants to grab a cab to work, I would probably want to know that how bad the traffic is going to be during the commuting peak hours. If I am a the city manager, I would want to know what are the traffic loads of each hours.
 

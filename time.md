@@ -5,7 +5,7 @@ title: Time Analysis
 
 **author: Yuchen Gao[yga111]**
 
-# **1. Time Subject ETL**
+# 1. Time Subject ETL
 - **Generate New Fields**
 
     - **pickup_datetime**
@@ -57,11 +57,11 @@ title: Time Analysis
 
     - Drop all the columns other than pickup_datetime, dropoff_datetime, year, month, monthday, weekday, and date.
         
-# **2. When is the period of high demand for taxis?**
+# 2. When is the period of high demand for taxis?
 
 **Perspective**: If I were the taxi regulator/planner in New York City, I would want to know how the number of taxi orders changes over time because it reflects the demand for taxis from New Yorkers. It would be nice to discover certain specific patterns because it would make it easier for me to schedule taxis on the road to ensure smooth travel for citizens.
 
-## **Hourly order numbers in 2017-2021**
+## Hourly order numbers in 2017-2021
 
 ![Folded Line Chart of 2017]({{ site.url }}{{ site.baseurl }}/public/img/time/hour/hour_2017.png)
 ![Folded Line Chart of 2018]({{ site.url }}{{ site.baseurl }}/public/img/time/hour/hour_2018.png)
@@ -86,7 +86,7 @@ title: Time Analysis
     - New Yorkers have the highest taxi demand from 5:00 am to 2:00 pm.
     - New Yorkers have the lowest taxi demand from 7:00 pm to 10:00 pm.
 
-## **Daily order numbers in 2017-2021**
+## Daily order numbers in 2017-2021
 
 ![Folded Line Chart of 2017]({{ site.url }}{{ site.baseurl }}/public/img/time/day/day_2017.png)
 ![Folded Line Chart of 2018]({{ site.url }}{{ site.baseurl }}/public/img/time/day/day_2018.png)
@@ -116,7 +116,7 @@ title: Time Analysis
     - Demand for taxi rides from New Yorkers will plummet on snowstorm days, holidays, or days with big-scale celebrations.
     - The covid-19 pandemic has enormously impacted the taxi industry in New York City.
 
-## **Weekday order numbers and Average passenger numbers in 2017-2021**
+## Weekday order numbers and Average passenger numbers in 2017-2021
 
 ##### **weekday order numbers**: ####
 ![Folded Line Chart of 2017]({{ site.url }}{{ site.baseurl }}/public/img/time/weekday/week_2017.png)
@@ -143,7 +143,7 @@ title: Time Analysis
     - New Yorkers have the highest demand for taxi rides on Fridays and Thursdays.
     - New Yorkers have the lowest demand for taxi rides on Sundays.
 
-## **Monthly order numbers in 2017-2021**
+## Monthly order numbers in 2017-2021
 
 ![Folded Line Chart of 2017]({{ site.url }}{{ site.baseurl }}/public/img/time/month/month_2017.png)
 ![Folded Line Chart of 2018]({{ site.url }}{{ site.baseurl }}/public/img/time/month/month_2018.png)
@@ -167,7 +167,7 @@ title: Time Analysis
     - New Yorkers have the lowest demand for taxi rides in August.
     - The covid-19 pandemic has enormously impacted the taxi industry in New York City.
 
-## **Annual order numbers in 2017-2021**
+## Annual order numbers in 2017-2021
 
 ![Folded Line Chart of 5 years]({{ site.url }}{{ site.baseurl }}/public/img/time/year/year.png)
 <div id="heatmap-10" class="canvas-400"></div>
