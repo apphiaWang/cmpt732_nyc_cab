@@ -88,12 +88,11 @@ At first, I thought the economic downturn caused by covid would lead to decrease
 
  Also notice that the mean is relatively higher from March to June 2020, the lockdown period of NY. So we might infer that the difficulty of travel lead passengers to tip more considering the hard work of the drivers.
 
- <img src="{{ site.url }}{{ site.baseurl }}/public/img/tip/day_hour.png" alt="Mean tip by pickup day and hour"/>
-
 ## 2.3. Does tipping vary by location?
 
 ### 2.3.1. Yellow VS Green
-You might have noticed that in the previous distribution barcharts, the green cab passengers tend to tip less than those yellow. In 2021, Quite a few green cab passengers do not even tip. In New York, yellow cabs run mainly in busy urban areas, while green cabs, introduced in 2011, run in areas not served by yellow cabs. This give us a new question, do tipping vary by the pick-up/drop-off locations?
+You might have noticed that in the previous distribution barcharts, the green cab passengers tend to tip less than those yellow. In 2021, Quite a few green cab passengers do not even tip. In New York, yellow cabs run mainly in the busy commercial areas of Manhattan, while green cabs, introduced in 2011, run in areas not served by yellow cabs. This give us a new question, do tipping vary by the pick-up/drop-off locations?
+<img src="{{ site.url }}{{ site.baseurl }}/public/img/tip/boro.png" alt="NY cab zone" title="Map of New York Yellow and Green Cab Zone" width="50%" style="margin:auto"/>
 
 ### 2.3.2. Mean Tip Percent by Locations
 
